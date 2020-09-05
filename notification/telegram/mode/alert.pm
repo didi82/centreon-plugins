@@ -280,6 +280,10 @@ Specify the link url (Example: %{centreon_url}/main.php?p=20201&o=svc&host_searc
 
 Threshold for HTTP timeout.
 
+=item B<--notification-type>
+
+Specify notification type for the alert (Required).
+
 =back
 
 =cut
