@@ -42,7 +42,6 @@ sub new {
         'signal'            => 'network::mikrotik::snmp::mode::signal',
         'time'              => 'snmp_standard::mode::ntp',
         'uptime'            => 'snmp_standard::mode::uptime',
-		'bandwidth'			=> 'network::cisco::standard::snmp::plugin',
     );
 
     return $self;
