@@ -62,6 +62,7 @@ sub new {
         "centreon-url:s"        => { name => 'centreon_url' },
         "centreon-token:s"      => { name => 'centreon_token' },
         "timeout:s"             => { name => 'timeout' },
+		"notification-type:s"	=> { name => 'notification_type' },
     });
 
     $self->{http} = centreon::plugins::http->new(%options);
@@ -83,7 +84,11 @@ sub check_options {
     if (!defined($self->{option_results}->{host_name}) || $self->{option_results}->{host_name} eq '') {
         $self->{output}->add_option_msg(short_msg => "You need to specify --host-name option.");
         $self->{output}->option_exit();
-    }
+    }	
+	if($self->{option_results}->{notification_type}) || $self->{option_results}->{notification_type} eq ''){
+        $self->{output}->add_option_msg(short_msg => "You need to specify --notification-type option.");
+        $self->{output}->option_exit();
+	}
 
     foreach (('graph_url', 'link_url')) {
         if (defined($self->{option_results}->{$_})) {
@@ -103,6 +108,8 @@ sub host_message {
             $self->{message} = $telegram_icon_host{lc($self->{option_results}->{host_state})};
         }
     }
+	
+	$self->{message} .= " Type <i>" . $self->{option_results}->{notification_type} . "</i>";
 
     $self->{message} .= " Host <i>" . $self->{option_results}->{host_name} . "</i>";
 
@@ -127,6 +134,8 @@ sub service_message {
             $self->{message} = $telegram_icon_service{lc($self->{option_results}->{service_state})};
         }
     }
+
+	$self->{message} .= " Type <i>" . $self->{option_results}->{notification_type} . "</i>";
 
     $self->{message} .= " Host <i>" . $self->{option_results}->{host_name} . " | Service " . $self->{option_results}->{service_description} . "</i>";
 
